@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<head>
+<title>Localidades</title>
+
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/custom.css" />
+<script src="js/bootstrap.min.js"></script>
+<link rel="icon" href="Img/unnamed.png" />
+</head>
+
+<h:body style="margin-bottom: 50px">
+
+	<!-- load header -->
+	<nav class="navbar navbar-default"> <script>
+		$(function() {
+			$("nav").load("header.html")
+		});
+	</script> </nav>
+
+	<!-- show and hide div -->
+	<script type="text/javascript">
+		function toggle_div_fun(id) {
+
+			var divelement = document.getElementById(id);
+
+			if (divelement.style.display == 'none')
+				divelement.style.display = 'block';
+			else
+				divelement.style.display = 'none';
+		}
+	</script>
+
+	<div class="container-fluid">
+			<div class="col-sm-8">
+				<h2>
+					Localidades
+					<button onclick="toggle_div_fun('create');" class="btn btn-success">Criar</button>
+					<button onclick="toggle_div_fun('update');" class="btn btn-primary">Atualizar</button>
+				</h2>
+				<h:form>
+					<h:dataTable class="table table-hover table-striped"
+						value="#{locationBackingBean.locationList}" var="location">
+						<h:column>
+							<f:facet name="header" class="control-label">Nome</f:facet>
+							      #{location.name}
+							   </h:column>
+						<h:column>
+							<f:facet name="header" class="control-label">Ações</f:facet>
+							<h:commandLink type="button" class="btn btn-danger"
+								value="Apagar"
+								action="#{locationBackingBean.deleteLocation(location)}" />
+						</h:column>
+					</h:dataTable>
+				</h:form>
+		</div>
+
+		<div class="row">
+			<div style="display: none;" id="create">
+				<div class="col-sm-4">
+
+					<h2>Adicionar Nova Localidade</h2>
+					<h:form class="form-group">
+						<h:outputLabel class="control-label" value="Nome" />
+						<h:inputText class="form-control"
+							value="#{locationBackingBean.createName}" />
+						<h:commandButton class="btn btn-success"
+							action="#{locationBackingBean.createLocation}" value="Adicionar" />
+					</h:form>
+
+					<div>
+						<p></p>
+					</div>
+
+				</div>
+			</div>
+
+			<div style="display: none;" id="update">
+				<div class="col-sm-4">
+					<h:form class="form-group">
+						<h2>Atualizar Localidade</h2>
+						<div>
+							<h:outputLabel class="control-label" value="Escolher Localidade" />
+							<h:selectOneMenu class="form-control"
+								value="#{locationBackingBean.updateLocationId}">
+								<f:selectItems value="#{locationBackingBean.locationList}"
+									var="location" itemValue="#{location.id}"
+									itemLabel="#{location.name}" />
+							</h:selectOneMenu>
+						</div>
+						<div>
+							<h:outputLabel class="control-label" value="Novo Nome" />
+							<h:inputText class="form-control"
+								value="#{locationBackingBean.updateName}" />
+							<h:commandButton class="btn btn-primary"
+								action="#{locationBackingBean.updateLocation}" value="Atualizar" />
+						</div>
+					</h:form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- load footer -->
+	<footer class="footer"> <script>
+		$(function() {
+			$("footer").load("footer.html")
+		});
+	</script> </footer>
+</h:body>
+</html>

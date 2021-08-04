@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<head>
+<title>Temperatura</title>
+
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/custom.css" />
+<script src="js/bootstrap.min.js"></script>
+<link rel="icon" href="Img/unnamed.png" />
+</head>
+
+<h:body style="margin-bottom: 50px">
+
+	<!-- load header -->
+	<nav class="navbar navbar-default"> <script>
+		$(function() {
+			$("nav").load("header.html")
+		});
+	</script> </nav>
+
+	<!-- show and hide div -->
+	<script type="text/javascript">
+		function toggle_div_fun(id) {
+
+			var divelement = document.getElementById(id);
+
+			if (divelement.style.display == 'none')
+				divelement.style.display = 'block';
+			else
+				divelement.style.display = 'none';
+		}
+	</script>
+	<div class="container-fluid">
+		<div class="col-sm-8">
+			<h2>
+				Temperatura
+				<button onclick="toggle_div_fun('create');" class="btn btn-success">Criar</button>
+			</h2>
+			<h:form class="form-inline">
+				<div class="form-group">
+					<h:outputLabel class="control-label" value="Escolher Localidade" />
+					<h:selectOneMenu class="form-control"
+						value="#{weatherBackingBean.locationListDropdown}">
+						<f:selectItem itemValue="0" itemLabel="Ver Tudo" />
+						<f:selectItems value="#{locationBackingBean.locationList}"
+							var="location" itemValue="#{location.id}"
+							itemLabel="#{location.name}" />
+					</h:selectOneMenu>
+					<h:commandButton class="btn btn-success" value="OK" />
+				</div>
+			</h:form>
+			<h:form>
+				<h:dataTable class="table table-hover table-striped"
+					value="#{weatherBackingBean.allWeatherData}" var="weather">
+					<h:column>
+						<f:facet name="header" class="control-label">Localidade</f:facet>
+					      #{weather.location.name}
+					   </h:column>
+					<h:column>
+						<f:facet name="header" class="control-label">Data</f:facet>
+					      #{weather.date}
+					   </h:column>
+					<h:column>
+						<f:facet name="header" class="control-label">Min</f:facet>
+					      #{weather.mintemperature}
+					   </h:column>
+					<h:column>
+						<f:facet name="header" class="control-label">Max</f:facet>
+					      #{weather.maxtemperature}
+					   </h:column>
+					<h:column>
+						<f:facet name="header" class="control-label">Condições</f:facet>
+					      #{weather.condition}
+					   </h:column>
+					<h:column>
+						<f:facet name="header" class="control-label">Precipitação</f:facet>
+					      #{weather.precipitation}
+					   </h:column>
+					<h:column>
+						<f:facet name="header" class="control-label">Vento</f:facet>
+					      #{weather.wind_speed}
+					       #{weather.wind_direction}
+					   </h:column>
+					<h:column>
+						<f:facet name="header" class="control-label">UV</f:facet>
+					      #{weather.uv_radiation}
+					   </h:column>
+					<h:column>
+						<f:facet name="header" class="control-label">Ações</f:facet>
+						<h:commandLink type="button" class="btn btn-danger"
+							value="Apagar"
+							action="#{weatherBackingBean.deleteWeatherData(weather)}" />
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</div>
+		<div class="row">
+			<div style="display: none;" id="create">
+				<div class="col-sm-4">
+					<h2>Adicionar Novo Registo</h2>
+					<h:form class="form-group">
+						<div>
+							<h:outputLabel class="control-label" value="Localidade" />
+							<h:selectOneMenu class="form-control"
+								value="#{weatherBackingBean.locationDropdown}">
+								<f:selectItems value="#{locationBackingBean.locationList}"
+									var="location" itemValue="#{location.id}"
+									itemLabel="#{location.name}" />
+							</h:selectOneMenu>
+						</div>
+						<div>
+							<h:outputLabel class="control-label"
+								value="Temperatura Minima (ºC) " />
+							<h:inputText class="form-control" type="number"
+								value="#{weatherBackingBean.mintemperature}" />
+						</div>
+						<div>
+							<h:outputLabel class="control-label"
+								value="Temperatura Maxima (ºC) " />
+							<h:inputText class="form-control" type="number"
+								value="#{weatherBackingBean.maxtemperature}" />
+						</div>
+						<div>
+							<h:outputLabel class="control-label" value="Condição" />
+							<h:selectOneMenu class="form-control"
+								value="#{weatherBackingBean.condition}">
+								<f:selectItem itemValue="Céu Limpo" itemLabel="Céu Limpo" />
+								<f:selectItem itemValue="Nevoeiro" itemLabel="Nevoeiro" />
+								<f:selectItem itemValue="Chuva" itemLabel="Chuva" />
+								<f:selectItem itemValue="Nuvens" itemLabel="Nuvens" />
+								<f:selectItem itemValue="Sol" itemLabel="Sol" />
+							</h:selectOneMenu>
+						</div>
+						<div>
+							<h:outputLabel class="control-label" value="Precipitação" />
+							<h:inputText class="form-control" type="range"
+								value="#{weatherBackingBean.precipitation}" />
+						</div>
+						<div>
+							<h:outputLabel class="control-label" value="Vento" />
+							<h:inputText class="form-control" type="range" min="0" max="250"
+								value="#{weatherBackingBean.wind_speed}" />
+							<h:selectOneMenu class="form-control"
+								value="#{weatherBackingBean.wind_direction}">
+								<f:selectItem itemValue="N" itemLabel="N" />
+								<f:selectItem itemValue="S" itemLabel="S" />
+								<f:selectItem itemValue="E" itemLabel="E" />
+								<f:selectItem itemValue="W" itemLabel="W" />
+							</h:selectOneMenu>
+						</div>
+						<div>
+							<h:outputLabel class="control-label" value="Radiação UV" />
+							<h:selectOneMenu class="form-control"
+								value="#{weatherBackingBean.uv_radiation}">
+								<f:selectItem itemValue="1" itemLabel="1" />
+								<f:selectItem itemValue="2" itemLabel="2" />
+								<f:selectItem itemValue="3" itemLabel="3" />
+								<f:selectItem itemValue="4" itemLabel="4" />
+								<f:selectItem itemValue="5" itemLabel="5" />
+								<f:selectItem itemValue="6" itemLabel="6" />
+								<f:selectItem itemValue="7" itemLabel="7" />
+								<f:selectItem itemValue="8" itemLabel="8" />
+								<f:selectItem itemValue="9" itemLabel="9" />
+								<f:selectItem itemValue="10" itemLabel="10" />
+								<f:selectItem itemValue="11" itemLabel="11" />
+								<f:selectItem itemValue="12" itemLabel="11+" />
+							</h:selectOneMenu>
+						</div>
+						<div>
+							<h:outputLabel class="control-label" value="Data" />
+							<h:inputText class="form-control"
+								a:placeholder="dd/MM/yyyy HH:mm:ss"
+								value="#{weatherBackingBean.date}" />
+						</div>
+						<h:commandButton class="btn btn-success"
+							action="#{weatherBackingBean.createWeatherData}" value="Adicionar" />
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<footer class="footer"> <script>
+		$(function() {
+			$("footer").load("footer.html")
+		});
+	</script> </footer>
+</h:body>
+</html>
