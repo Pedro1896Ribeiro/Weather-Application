@@ -1,0 +1,17 @@
+plugins {
+    id 'java-library'
+	id 'application'
+}
+
+mainClassName="pt.ipb.sd.WindowBuilder.WeatherDataManager"
+
+
+dependencies {
+	implementation 'org.apache.tomee:openejb-client:8.0.0-M1'
+	compile project(':WeatherManager')
+	
+}
+
+repositories {
+    jcenter()
+}
